@@ -14,36 +14,20 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.postService.getAll()
-        .subscribe(response => {
-          this.posts = response.json();
-        }, error => {
-          alert('An unexpected error occurred.');
-          console.log(error);
-        });
+    this.postService.getAll().subscribe(posts => this.posts = posts);
   }
 
   createPost(input: HTMLInputElement) {
     let post = { title: input.value };
     input.value = '';
-    this.postService.create(post)
-        .subscribe(response => {
-          this.posts = response.json();
-        });
+    this.postService.create(post).subscribe(posts => this.posts = posts);
   }
 
   updatePost(post) {
-    this.postService.update(post)
-        .subscribe(response => {
-          this.posts = response.json();
-        });
+    this.postService.update(post).subscribe(posts => this.posts = posts);
   }
 
   deletePost(post) {
-    this.postService.delete(post.id)
-      .subscribe(response => {
-        let index = this.posts.indexOf(post);
-        this.posts.splice(index, 1);
-      });
+    this.postService.delete(post.id).subscribe(posts => this.posts = posts);
   }
 }
