@@ -14,7 +14,7 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.postService.getAllPosts()
+    this.postService.getAll()
         .subscribe(response => {
           this.posts = response.json();
         }, error => {
@@ -26,45 +26,24 @@ export class PostsComponent implements OnInit {
   createPost(input: HTMLInputElement) {
     let post = { title: input.value };
     input.value = '';
-    this.postService.createPost(post)
+    this.postService.create(post)
         .subscribe(response => {
           this.posts = response.json();
-        }, (error: Response) => {
-          if(error.status === 400) {
-            //this.form.setErrors(error.json());
-          } else {
-            alert('An unexpected error occurred.');
-            console.log(error);
-          }
         });
   }
 
   updatePost(post) {
-    this.postService.updatePost(post)
+    this.postService.update(post)
         .subscribe(response => {
           this.posts = response.json();
-        }, (error: Response) => {
-          if(error.status === 400) {
-            //this.form.setErrors(error.json());
-          } else {
-            alert('An unexpected error occurred.');
-            console.log(error);
-          }
         });
   }
 
   deletePost(post) {
-    this.postService.deletePost(post.id)
+    this.postService.delete(post.id)
       .subscribe(response => {
         let index = this.posts.indexOf(post);
         this.posts.splice(index, 1);
-      }, (error: Response) => {
-        if(error.status === 404) {
-          alert('This post has already been deleted.');
-        } else {
-          alert('An unexpected error occurred.');
-          console.log(error);
-        }
       });
   }
 }
